@@ -1,0 +1,12 @@
+[submodule "shaders"]
+	path = shaders
+	url = git@github.com:jesseyeh/shaders.git
+[submodule "deps/glfw"]
+	path = deps/glfw
+	url = git@github.com:jesseyeh/glfw.git
+[submodule "deps/glm"]
+	path = deps/glm
+	url = git@github.com:jesseyeh/glm.git
+[submodule "deps/stb"]
+	path = deps/stb
+	url = git@github.com:jesseyeh/stb.git
