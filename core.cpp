@@ -74,7 +74,7 @@ bool Core::parseOpts(int argc, char *argv[]) {
     }
 
     int opt;
-    while ((opt = getopt(argc, argv, "w:h:")) != -1) {
+    while ((opt = getopt(argc, argv, "w:h:f:")) != -1) {
         switch (opt) {
             case 'w':
                 optWidth_ = atoi(optarg);
@@ -82,9 +82,13 @@ bool Core::parseOpts(int argc, char *argv[]) {
             case 'h':
                 optHeight_ = atoi(optarg);
                 break;
+            case 'f':
+                optCreateImageSequence_ = true;
+                optTargetFrames_ = atoi(optarg);
+                break;
             case '?':
                 std::cout << usage_;
-                if (optopt == 'w' || optopt == 'h') {
+                if (optopt == 'w' || optopt == 'h' || optopt == 'f') {
                     fprintf(stderr, "Option -%c requires an argument.\n", optopt);
                 } else if (isprint(optopt)) {
                     fprintf(stderr, "Unknown option: -%c\n", optopt);
@@ -134,6 +138,10 @@ int Core::mainLoop() {
 
             postProcessor.draw(elapsedTime_, optWidth_, optHeight_);
 
+            if (optCreateImageSequence_ && optTargetFrames_ > 0) {
+                createImageSequence();
+            }
+
             glfwSwapBuffers(window_);
             glfwPollEvents();
 
@@ -146,6 +154,28 @@ int Core::mainLoop() {
     glfwTerminate();
 
     return 0;
+}
+
+// ===================
+// createImageSequence
+// ===================
+void Core::createImageSequence() {
+    printf("\rProcessing frame %d of %d...", currFrame_ + 1, optTargetFrames_);
+    fflush(stdout);
+
+    char filename[16];
+    snprintf(filename, sizeof(filename), "./out_%03d.png", currFrame_++);
+
+    pixels_ = (GLubyte *)reallocf(pixels_, 3 * sizeof(GLubyte) * optWidth_ * optHeight_);
+    if (pixels_) {
+        glReadPixels(0, 0, optWidth_, optHeight_, GL_RGB, GL_UNSIGNED_BYTE, pixels_);
+        stbi_write_png(filename, optWidth_, optHeight_, 3, pixels_, 3 * sizeof(GLubyte) * optWidth_);
+    }
+
+    if (currFrame_ >= optTargetFrames_) {
+        optCreateImageSequence_ = false;
+        printf("\nDone!\n");
+    }
 }
 
 // ============

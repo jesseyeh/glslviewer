@@ -6,6 +6,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "stb_image_write.h"
 
 #include "postprocessor.h"
 
@@ -23,6 +24,8 @@ private:
     bool initWindow(GLFWwindow *&window);
     bool initGLAD();
 
+    void createImageSequence();
+
     void processInput(GLFWwindow *window);
 
 private:
@@ -32,6 +35,11 @@ private:
 
     int optWidth_  = 800;
     int optHeight_ = 600;
+
+    bool optCreateImageSequence_ = false;
+    unsigned int optTargetFrames_ = 0;
+    unsigned int currFrame_ = 0;
+    GLubyte *pixels_ = NULL;
 
     std::string fragmentPath_ = "";
 
