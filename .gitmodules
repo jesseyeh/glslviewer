@@ -3,10 +3,10 @@
 	url = git@github.com:jesseyeh/shaders.git
 [submodule "deps/glfw"]
 	path = deps/glfw
-	url = git@github.com:jesseyeh/glfw.git
+	url = git@github.com:glfw/glfw.git
 [submodule "deps/glm"]
 	path = deps/glm
-	url = git@github.com:jesseyeh/glm.git
+	url = git@github.com:g-truc/glm.git
 [submodule "deps/stb"]
 	path = deps/stb
-	url = git@github.com:jesseyeh/stb.git
+	url = git@github.com:nothings/stb.git
